@@ -1,4 +1,8 @@
 <style scoped>
+    .main{
+        width: 100%;
+        height: 100%;
+    }
     .layout-con{
         height: 100%;
         width: 100%;
@@ -65,12 +69,9 @@
                 </Menu>
             </Sider>
             <Layout>
-                <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}"></Header>
                 <Content :style="{padding: '0 16px 16px'}">
                     <Breadcrumb :style="{margin: '16px 0'}">
-                        <BreadcrumbItem>Home</BreadcrumbItem>
-                        <BreadcrumbItem>Components</BreadcrumbItem>
-                        <BreadcrumbItem>Layout</BreadcrumbItem>
+                        <BreadcrumbItem to="/">Home</BreadcrumbItem>
                     </Breadcrumb>
                     <Card>
                         <div style="height: 700px">
@@ -109,10 +110,4 @@
         }
     }
 </script>
-<style  scoped>
-  .main{
-     width: 100%;
-     height: 100%;
-  }
-</style>
 
