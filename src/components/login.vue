@@ -20,9 +20,7 @@
      top: 0;
  }
  .header-logo{
-     display: flex;
-     justify-content: center;
-     align-items: center;
+     padding: 8px 0 0 56px;
      height: 80px;
      width: 185px;
      background-color: rgba(0,106,195,1);
@@ -57,10 +55,8 @@
     margin-left: -500px;
  }
 .bg-left{
+  padding:60px 0 0 85px; 
   border-radius: 10px 0 0 10px;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
   height: 500px;
   width: 420px;
   background-color: rgba(0,106,195,0.7);
@@ -69,13 +65,13 @@
   top: 0;
   }
   .logo{
-      margin-top: 100px;
+      margin-left: 60px;
       display: block;
       width: 120px;
       height: 120px;
   }
   .bg-left-font{
-      margin-top: 20px;
+      margin-top: 60px;
       font-size: 22px;
       width: 250px;
       height: 39px;
@@ -84,16 +80,15 @@
       color: #FFFFFF;
   }
   .bg-left-bottom{
+      margin-left: 70px;
       margin-top: 144px;
       font-size: 18px;
       color: #FFFFFF;
       font-weight: 100;
   }
   .bg-right{
+      padding-left: 100px;
       border-radius: 0 10px 10px 0;
-      display: flex;
-      flex-flow: column;
-      align-items: center;
       position: absolute;
       left: 420px;
       width: 580px;
@@ -136,7 +131,7 @@
                 </div>
                 <div class="bg-right">
                     <div class="bg-right-top">LOGING/登录</div>
-                     <Form ref="formInline" :model="formInline" :rules="ruleInline" inline class="bg-right-table">
+                     <Form ref="formInline" :model="formInline" :rules="ruleInline" class="bg-right-table">
                                     <FormItem prop="user" class="bg-right-table1">
                                         <Input type="text" v-model="formInline.user" placeholder="Username">
                                             <Icon type="ios-person-outline" slot="prepend"></Icon>
@@ -179,6 +174,7 @@
          methods:{
             ...mapActions(['checkLogin']),
              handleSubmit(name) {
+                console.log(this.formInline)
                 this.$refs[name].validate((valid) => {
                     console.log(valid)
                     if (valid) {

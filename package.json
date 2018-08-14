@@ -11,13 +11,18 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-plugin-transform-es2015-arrow-functions": "^6.22.0",
+    "babel-polyfill": "^6.26.0",
     "crypto-js": "^3.1.9-1",
+    "es6-promise": "^4.2.4",
     "iview": "^2.14.2",
+    "url-search-params-polyfill": "^4.0.1",
     "vue": "^2.5.11",
     "vue-axios": "^2.1.1",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "vuex-persistedstate": "^2.5.4"
   },
   "browserslist": [
     "> 1%",

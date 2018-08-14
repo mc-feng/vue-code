@@ -7,7 +7,10 @@ import 'iview/dist/styles/iview.css';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import {store} from './store/index';
-
+import 'babel-polyfill';
+import Es6Promise from 'es6-promise';
+import 'url-search-params-polyfill'
+Es6Promise.polyfill()
 
 Vue.use(VueAxios, axios);
 Vue.use(VueRouter);

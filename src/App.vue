@@ -44,27 +44,27 @@
                 <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
                     <router-link to="/user" tag='li' class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
-                        <span>用户模块</span>
+                        <span>管理员管理</span>
                     </router-link>
                     <router-link to="/product" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
-                        <span>产品模块</span>
+                        <span>用户管理</span>
                     </router-link>
                     <router-link to="/classify" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
-                        <span>分类模块</span>
+                        <span>角色管理</span>
                     </router-link>
                     <router-link to="/news" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
-                        <span>新闻模块</span>
+                        <span>权限管理</span>
                     </router-link>
                     <router-link to="/upload" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
-                        <span>上传模块</span>
+                        <span>图片管理</span>
                     </router-link>
                     <router-link to="/comment" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
-                        <span>评论模块</span>
+                        <span>预约挂号</span>
                     </router-link>
                 </Menu>
             </Sider>
