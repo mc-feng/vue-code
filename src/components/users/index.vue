@@ -17,58 +17,43 @@
          <Page :total="filter.total" :page-size="filter.limit" :page-size-opts="[5,10,20,30,40]" show-sizer @on-change="onpagechange" @on-page-size-change="onPageSizeChange"></Page>
         <Modal
             v-model="modal"
-            title="数据操作">
+            title="添加管理员">
             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
-                <FormItem label="Name" prop="name">
-                    <Input v-model="formValidate.name" placeholder="Enter your name"></Input>
+                <FormItem label="账号" prop="account">
+                    <Input v-model="formValidate.account" placeholder="请输入账号"></Input>
                 </FormItem>
-                <FormItem label="age" prop="age">
-                    <Input v-model="formValidate.age" placeholder="Enter your age"></Input>
+                <FormItem label="密码" prop="passwd">
+                    <Input type="password" v-model="formValidate.passwd" placeholder="请输入密码"></Input>
                 </FormItem>
-                <FormItem label="E-mail" prop="mail">
-                    <Input v-model="formValidate.mail" placeholder="Enter your e-mail"></Input>
+                <FormItem label="确认密码" prop="passwdCheck">
+                    <Input type="password" v-model="formValidate.passwdCheck" placeholder="请再次输入密码"></Input>
                 </FormItem>
-                <FormItem label="City" prop="city">
-                    <Select v-model="formValidate.city" placeholder="Select your city">
-                        <Option value="北京">北京</Option>
-                        <Option value="上海">上海</Option>
-                        <Option value="深圳">深圳</Option>
-                    </Select>
+                <FormItem label="姓名" prop="name">
+                    <Input v-model="formValidate.name" placeholder="请输入姓名"></Input>
                 </FormItem>
-                <FormItem label="Date">
+                <FormItem label="手机号码" prop="phone">
+                    <Input v-model="formValidate.phone" placeholder="请输入您的手机号码"></Input>
+                </FormItem>
+                <FormItem label="出生年月">
                     <Row>
                         <Col span="11">
                             <FormItem prop="date">
-                                <DatePicker type="date" placeholder="Select date" v-model="formValidate.date"></DatePicker>
-                            </FormItem>
-                        </Col>
-                        <Col span="2" style="text-align: center">-</Col>
-                        <Col span="11">
-                            <FormItem prop="time">
-                                <TimePicker type="time" placeholder="Select time" v-model="formValidate.time"></TimePicker>
+                                <DatePicker type="date" placeholder="请选择出生年月日" v-model="formValidate.date"></DatePicker>
                             </FormItem>
                         </Col>
                     </Row>
                 </FormItem>
-                <FormItem label="Gender" prop="gender">
+                <FormItem label="性别" prop="gender">
                     <RadioGroup v-model="formValidate.gender">
-                        <Radio label="male">Male</Radio>
-                        <Radio label="female">Female</Radio>
+                        <Radio label="男">男</Radio>
+                        <Radio label="女">女</Radio>
                     </RadioGroup>
                 </FormItem>
-                <FormItem label="Desc" prop="desc">
-                    <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
-                </FormItem>
-                <FormItem label="password" prop="password">
-                    <Input v-model="formValidate.password" placeholder="Enter your password"></Input>
-                </FormItem>
-                <FormItem label="Hobby" prop="interest">
-                    <CheckboxGroup v-model="formValidate.interest">
-                        <Checkbox label="Eat"></Checkbox>
-                        <Checkbox label="Sleep"></Checkbox>
-                        <Checkbox label="Run"></Checkbox>
-                        <Checkbox label="Movie"></Checkbox>
-                    </CheckboxGroup>
+                <FormItem label="角色" prop="role">
+                    <Select v-model="formValidate.role" placeholder="选择你的角色">
+                        <Option value="员工">员工</Option>
+                        <Option value="管理员">管理员</Option>
+                    </Select>
                 </FormItem>
                 <FormItem>
                     <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
@@ -85,6 +70,36 @@
     export default {
         mixins:[base],
         data () {
+            // 自定义的正则表达式
+            const validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('密码不能为空'));
+                } else {
+                    if (this.formValidate.passwdCheck !== '') {
+                        // 对第二个密码框单独验证
+                        this.$refs.formValidate.validateField('passwdCheck');
+                    }
+                    callback();
+                }
+            };
+            const validatePassCheck = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入您的密码'));
+                } else if (value !== this.formValidate.passwd) {
+                    callback(new Error('两次密码不匹配'));
+                } else {
+                    callback();
+                }
+            };
+            const validatePhone = (rule, value, callback)=>{
+                if(value === ""){
+                    callback(new Error('电话号码不能为空'))
+                }else if(!/^1[34578]\d{9}$/.test(value)){
+                    callback(new Error('电话号码格式不正确'));
+                }else{
+                    callback();
+                }
+            }
             return {
                 columns: [
                     {
@@ -97,27 +112,27 @@
                         key: 'name',
                     },
                     {
-                        title: '年龄',
+                        title: '账号',
                         key: 'age'
                     },
                     {
-                        title: '密码',
+                        title: '性别',
                         key: 'password'
                     },
                     {
-                        title: '城市',
-                        key: 'city'
+                        title: '角色',
+                        key: 'role'
                     },
                     {
-                        title: '兴趣',
+                        title: '手机号',
                         key: 'interest'
                     },
                     {
-                        title: '日期',
+                        title: '出生年月',
                         key: 'date'
                     },
                     {
-                        title: '描述',
+                        title: '最后一次登录时间',
                         key: 'desc'
                     },
                     {
@@ -160,51 +175,40 @@
                 selection:[],
                 arr:[],
                 formValidate: {
-                    password: '',
-                    name: '',
-                    mail: '',
-                    city: '',
+                    passwd: '',
+                    passwdCheck: '',
+                    account:'',
+                    phone:'',
+                    role: '',
                     gender: '',
-                    interest: [],
                     date: '',
-                    time: '',
-                    desc: '',
-                    age:''
+                    name:''
                 },
                 ruleValidate: {
-                    name: [
+                    account:[
+                        { required: true, message: '账号不能为空', trigger: 'blur' }
+                    ],
+                    name:[
                         { required: true, message: '姓名不能为空', trigger: 'blur' }
                     ],
-                    age: [
-                        { required: true, message: '年龄不能为空', trigger: 'blur' }
+                    phone: [
+                        { required: true, validator:validatePhone, trigger: 'blur'},
                     ],
-                    password: [
-                        { required: true, message: '密码不能为空', trigger: 'blur' },
-                    ],
-                     mail: [
-                        { required: true, message: '邮箱不能为空', trigger: 'blur' },
-                        { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
-                    ],
-                    city: [
-                        { required: true, message: '请选择你的城市', trigger: 'change' }
+                    role: [
+                        { required: true, message: '请选择你的角色', trigger: 'change' }
                     ],
                     gender: [
                         { required: true, message: '请选择性别', trigger: 'change' }
                     ],
-                    interest: [
-                        { required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change' },
-                        { type: 'array', max: 2, message: '请选择你的爱好', trigger: 'change' }
-                    ],
-                     date: [
+                    date: [
                         { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
                     ],
-                    time: [
-                        { required: true, type: 'string', message: '请选择时间', trigger: 'change' }
+                    passwd: [
+                        { required: true,validator: validatePass, trigger: 'blur' }
                     ],
-                    desc: [
-                        { required: true, message: '请对自己进行介绍', trigger: 'blur' },
-                        { type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
-                    ]
+                    passwdCheck: [
+                        { required: true,validator: validatePassCheck, trigger: 'blur' }
+                    ],
                 }
             }
         }, 

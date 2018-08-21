@@ -32,19 +32,64 @@
         vertical-align: middle;
         font-size: 22px;
     }
+    .sider{
+        background-color: #ffffff;
+    }
+    .header{
+        width: 100%;
+        height: 80px;
+        background: rgba(0,106,195,0.7);
+        position:relative;
+        left: 0;
+        top: 0;
+    }
+    .header-logo{
+        padding: 8px 0 0 56px;
+        height: 80px;
+        width: 200px;
+        background-color: rgba(0,106,195,1);
+        position: absolute;
+        left: 0;
+        right: 0;
+    }
+    .header-font{
+        height: 80px;
+        line-height: 80px;
+        margin-left:185px;
+        font-family: PingFangSC-Medium;
+        font-size: 18px;
+        color: #FFFFFF;
+        text-align: left;;
+    }
+    .header-font i{
+        float: left;
+        color: #FFFFFF;
+        text-align: left;
+        font-style: normal;
+    }
+    .header-font b{
+        font-weight: normal;
+        color: #FFFFFF;
+        float: right;
+        cursor: pointer;
+    }
 </style>
 <template>
     <div v-if='!login'  class="main">
         <app-login></app-login>
     </div>
     <div v-else>
+      <Header class="header">
+                <div class="header-logo"> <img src="./assets/logos.png" alt="this is logo"></div>
+                <div class="header-font clear"><i>上海市公共卫生管理中心后台管理系统</i><b @click="quit">退出</b></div>
+     </Header>
       <div class="layout">
         <Layout :style="{minHeight: '100vh'}">
-            <Sider collapsible :collapsed-width="78" v-model="isCollapsed">
-                <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
+            <Sider collapsible :collapsed-width="78" v-model="isCollapsed" class="sider" hide-trigger>
+                <Menu active-name="1-2" theme="light" width="auto" :class="menuitemClasses">
                     <router-link to="/user" tag='li' class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
-                        <span>管理员管理</span>
+                        <span>管理权限</span>
                     </router-link>
                     <router-link to="/product" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
@@ -94,7 +139,10 @@
             };
         },
         methods:{
-            ...mapActions(['checkLogin']),
+            ...mapActions(['checkLogin','changeLogin']),
+            quit(){
+                this.changeLogin()
+            }
         },
         computed: {
             ...mapGetters(['login']),

@@ -16,11 +16,17 @@ export const store = new Vuex.Store({
     mutations:{
         checkLogin:(state,payload)=>{
             state.login = payload;
+        },
+        changeLogin:(state)=>{
+            state.login= false
         }
     },
     actions:{
         checkLogin:({commit},payload)=>{
             commit('checkLogin',payload);
+        },
+        changeLogin:({commit})=>{
+            commit('changeLogin');
         }
     },
     plugins: [createPersistedState({ storage: window.sessionStorage })]
