@@ -1,21 +1,20 @@
+<style scoped>
+   .bookContent{
+       margin:18px 0 18px 0
+   }
+</style>
 <template>
      <div>
         <Row>
-            <Col span="12">
-              <ButtonGroup>
-                <Button type="primary"  @click="adduser('formValidate')">新增</Button>
-                <Button type="error" @click="deletemore">删除多个</Button>
-              </ButtonGroup>
-            </Col>
-             <Col span="12">
+             <Col span="8">
                 <Input v-model="filter.name">
                     <Button slot="append" icon="ios-search" @click="onsearch"></Button>
                  </Input>
              </Col>
         </Row>
-        <Table border :columns="columns" :data="list" ref="selection" @on-selection-change='selectionChange'></Table>
-         <Page :total="filter.total" :page-size="filter.limit" :page-size-opts="[5,10,20,30,40]" show-sizer @on-change="onpagechange" @on-page-size-change="onPageSizeChange"></Page>
-        <Modal
+        <Table border :columns="columns" :data="list" ref="selection" class="bookContent"></Table>
+        <Page :total="filter.total" :page-size="filter.limit" :page-size-opts="[5,10,20,30,40]" show-sizer @on-change="onpagechange" @on-page-size-change="onPageSizeChange"></Page>
+        <!-- <Modal
             v-model="modal"
             title="数据操作">
             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
@@ -76,49 +75,50 @@
                 </FormItem>
             </Form>
             <div slot="footer"></div>
-        </Modal>
+        </Modal> -->
      </div>
 </template>
 <script>
     import md5 from 'crypto-js/md5';
-    import base from '../../common/Base'
     export default {
-        mixins:[base],
         data () {
             return {
                 columns: [
                     {
-                        type: 'selection',
-                        width: 60,
-                        align: 'center'
+                        title: '就诊人',
+                        key: 'patientName',
                     },
                     {
-                        title: '姓名',
-                        key: 'name',
+                        title: '身份证号',
+                        key: 'identityCard'
                     },
                     {
-                        title: '年龄',
-                        key: 'age'
+                        title: '手机号',
+                        key: 'patientPhone'
                     },
                     {
-                        title: '密码',
-                        key: 'password'
+                        title: '所属医院',
+                        key: 'hospt'
                     },
                     {
-                        title: '城市',
-                        key: 'city'
+                        title: '所属科室',
+                        key: 'dept'
                     },
                     {
-                        title: '兴趣',
-                        key: 'interest'
+                        title: '医生姓名',
+                        key: 'doc'
                     },
                     {
-                        title: '日期',
-                        key: 'date'
+                        title: '挂号费用',
+                        key: 'cost'
                     },
                     {
-                        title: '描述',
-                        key: 'desc'
+                        title: '预约时间',
+                        key: 'time'
+                    },
+                    {
+                        title: '提交时间',
+                        key: 'createTime'
                     },
                     {
                         title: '操作',
@@ -129,21 +129,7 @@
                             return h('div', [
                                 h('Button', {
                                     props: {
-                                        type: 'primary',
-                                        size: 'small'
-                                    },
-                                    style: {
-                                        marginRight: '5px'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.show(params.row)
-                                        }
-                                    }
-                                }, '修改'),
-                                h('Button', {
-                                    props: {
-                                        type: 'error',
+                                        type: 'info',
                                         size: 'small'
                                     },
                                     on: {
@@ -151,62 +137,98 @@
                                             this.remove(params.row)
                                         }
                                     }
-                                }, '删除')
+                                }, '查看')
                             ]);
                         }
                     }
                 ],
                 list: [],
-                selection:[],
                 arr:[],
-                formValidate: {
-                    password: '',
-                    name: '',
-                    mail: '',
-                    city: '',
-                    gender: '',
-                    interest: [],
-                    date: '',
-                    time: '',
-                    desc: '',
-                    age:''
-                },
-                ruleValidate: {
-                    name: [
-                        { required: true, message: '姓名不能为空', trigger: 'blur' }
-                    ],
-                    age: [
-                        { required: true, message: '年龄不能为空', trigger: 'blur' }
-                    ],
-                    password: [
-                        { required: true, message: '密码不能为空', trigger: 'blur' },
-                    ],
-                     mail: [
-                        { required: true, message: '邮箱不能为空', trigger: 'blur' },
-                        { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
-                    ],
-                    city: [
-                        { required: true, message: '请选择你的城市', trigger: 'change' }
-                    ],
-                    gender: [
-                        { required: true, message: '请选择性别', trigger: 'change' }
-                    ],
-                    interest: [
-                        { required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change' },
-                        { type: 'array', max: 2, message: '请选择你的爱好', trigger: 'change' }
-                    ],
-                     date: [
-                        { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
-                    ],
-                    time: [
-                        { required: true, type: 'string', message: '请选择时间', trigger: 'change' }
-                    ],
-                    desc: [
-                        { required: true, message: '请对自己进行介绍', trigger: 'blur' },
-                        { type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
-                    ]
+                filter:{
+                    total:0,
+                    limit:5,
+                    page:1,
+                    name:""
                 }
+                // formValidate: {
+                //     password: '',
+                //     name: '',
+                //     mail: '',
+                //     city: '',
+                //     gender: '',
+                //     interest: [],
+                //     date: '',
+                //     time: '',
+                //     desc: '',
+                //     age:''
+                // },
+                // ruleValidate: {
+                //     name: [
+                //         { required: true, message: '姓名不能为空', trigger: 'blur' }
+                //     ],
+                //     age: [
+                //         { required: true, message: '年龄不能为空', trigger: 'blur' }
+                //     ],
+                //     password: [
+                //         { required: true, message: '密码不能为空', trigger: 'blur' },
+                //     ],
+                //      mail: [
+                //         { required: true, message: '邮箱不能为空', trigger: 'blur' },
+                //         { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
+                //     ],
+                //     city: [
+                //         { required: true, message: '请选择你的城市', trigger: 'change' }
+                //     ],
+                //     gender: [
+                //         { required: true, message: '请选择性别', trigger: 'change' }
+                //     ],
+                //     interest: [
+                //         { required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change' },
+                //         { type: 'array', max: 2, message: '请选择你的爱好', trigger: 'change' }
+                //     ],
+                //      date: [
+                //         { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
+                //     ],
+                //     time: [
+                //         { required: true, type: 'string', message: '请选择时间', trigger: 'change' }
+                //     ],
+                //     desc: [
+                //         { required: true, message: '请对自己进行介绍', trigger: 'blur' },
+                //         { type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur' }
+                //     ]
+                // }
             }
         },
+        methods:{
+            getData(){
+                this.axios({
+                        method:'post',
+                        url:`http://192.168.2.165:8082/account/getbooklist`,
+                        data:{
+                            id:this.filter.page,
+                            userSex:this.filter.limit
+                        }
+                    }).then((response) => {
+                        console.log(response)
+                        this.list = response.data.result;
+                        this.filter.total = response.data.total;
+                    })
+            },
+            onsearch(){
+              this.getData();
+            },
+            onpagechange(page){
+              this.filter.page = page;
+              this.getData();
+            },
+            onPageSizeChange(pageSize){
+              this.filter.limit = pageSize;
+              this.getData();
+            },
+        },
+        mounted(){
+        //首次加载显示
+        this.getData();
+        }
     }
 </script>

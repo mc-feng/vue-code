@@ -39,7 +39,6 @@
 </template>
 <script>
     import base from '../../common/Base';
-
     import { quillEditor } from 'vue-quill-editor';
     export default {
         mixins:[base],

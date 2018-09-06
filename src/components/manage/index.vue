@@ -1,10 +1,14 @@
+<style  scoped>
+  .manage-header{
+      margin-bottom: 20px;
+  }
+</style>
 <template>
      <div>
-        <Row>
+        <Row class="manage-header">
             <Col span="12">
               <ButtonGroup>
                 <Button type="primary"  @click="adduser('formValidate')">新增</Button>
-                <Button type="error" @click="deletemore">删除多个</Button>
               </ButtonGroup>
             </Col>
              <Col span="12">
@@ -14,7 +18,6 @@
              </Col>
         </Row>
         <Table border :columns="columns" :data="list" ref="selection" @on-selection-change='selectionChange'></Table>
-         <Page :total="filter.total" :page-size="filter.limit" :page-size-opts="[5,10,20,30,40]" show-sizer @on-change="onpagechange" @on-page-size-change="onPageSizeChange"></Page>
         <Modal
             v-model="modal"
             title="添加管理员">
@@ -45,14 +48,14 @@
                 </FormItem>
                 <FormItem label="性别" prop="gender">
                     <RadioGroup v-model="formValidate.gender">
-                        <Radio label="男">男</Radio>
-                        <Radio label="女">女</Radio>
+                        <Radio label="0">男</Radio>
+                        <Radio label="1">女</Radio>
                     </RadioGroup>
                 </FormItem>
                 <FormItem label="角色" prop="role">
                     <Select v-model="formValidate.role" placeholder="选择你的角色">
-                        <Option value="员工">员工</Option>
-                        <Option value="管理员">管理员</Option>
+                        <Option value="2">员工</Option>
+                        <Option value="1">管理员</Option>
                     </Select>
                 </FormItem>
                 <FormItem>
@@ -103,37 +106,40 @@
             return {
                 columns: [
                     {
-                        type: 'selection',
-                        width: 60,
+                        title: '姓名',
+                        key: 'userName',
                         align: 'center'
                     },
                     {
-                        title: '姓名',
-                        key: 'name',
-                    },
-                    {
                         title: '账号',
-                        key: 'age'
+                        key: 'name',
+                        align: 'center'
                     },
                     {
                         title: '性别',
-                        key: 'password'
+                        key: 'userSex',
+                        align: 'center'
+                        
                     },
                     {
                         title: '角色',
-                        key: 'role'
+                        key: 'roleName',
+                        align: 'center'
                     },
                     {
                         title: '手机号',
-                        key: 'interest'
+                        key: 'userPhone',
+                        align: 'center'
                     },
                     {
                         title: '出生年月',
-                        key: 'date'
+                        key: 'userBoth',
+                        align: 'center'
                     },
                     {
                         title: '最后一次登录时间',
-                        key: 'desc'
+                        key: 'lastLoginTime',
+                        align: 'center'
                     },
                     {
                         title: '操作',

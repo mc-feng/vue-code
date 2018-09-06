@@ -76,7 +76,7 @@
 </style>
 <template>
     <div v-if='!login'  class="main">
-        <app-login></app-login>
+        <app-login @listenToChild="showChild"></app-login>
     </div>
     <div v-else>
       <Header class="header">
@@ -87,17 +87,17 @@
         <Layout :style="{minHeight: '100vh'}">
             <Sider collapsible :collapsed-width="78" v-model="isCollapsed" class="sider" hide-trigger>
                 <Menu active-name="1-2" theme="light" width="auto" :class="menuitemClasses">
-                    <router-link to="/user" tag='li' class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                    <router-link to="/manage" tag='li' class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
-                        <span>管理权限</span>
+                        <span>管理设置</span>
                     </router-link>
-                    <router-link to="/product" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                    <router-link to="/bookList" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
-                        <span>用户管理</span>
+                        <span>预约管理</span>
                     </router-link>
-                    <router-link to="/classify" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                    <router-link to="/image" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
-                        <span>角色管理</span>
+                        <span>图片管理</span>
                     </router-link>
                     <router-link to="/news" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
@@ -107,9 +107,9 @@
                         <Icon type="ios-navigate"></Icon>
                         <span>图片管理</span>
                     </router-link>
-                    <router-link to="/comment" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                    <router-link to="/user" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
-                        <span>预约挂号</span>
+                        <span>用户管理</span>
                     </router-link>
                 </Menu>
             </Sider>
@@ -136,12 +136,26 @@
         data () {
             return {
                 isCollapsed: false,
+                user:""
             };
         },
         methods:{
             ...mapActions(['checkLogin','changeLogin']),
-            quit(){
-                this.changeLogin()
+            showChild(data){
+                this.user = data
+            },
+            quit(data){
+                console.log(this.user)
+                 this.axios({
+                    method:'post',
+                    url:`http://192.168.2.165:8082/account/logout`,
+                    data:{
+                        "name":this.user
+                    }
+                }).then(response=>{
+                    console.log(response)  
+                    this.changeLogin()
+                })
             }
         },
         computed: {

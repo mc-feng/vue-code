@@ -148,6 +148,13 @@
                      </Form>
                 </div>
             </div>
+            <Modal
+                v-model="logForce"
+                title="您的账号已经在其他的地方登录"
+                @on-ok="ok"
+                @on-cancel="cancel">
+                <p>是否强制登录</p>
+            </Modal>
         </Layout>
     </div>
 </template>
@@ -156,7 +163,8 @@
     export default {
         data(){
             return{
-                 formInline: {
+                logForce:false,
+                formInline: {
                     user: '',
                     password: ''
                 },
@@ -168,22 +176,64 @@
                         { required: true, message: '请输入密码', trigger: 'blur' },
                         { type: 'string', min: 6, message: '密码至少6位以上', trigger: 'blur' }
                     ]
-                }
+                },
+                status:0
             }
         },
          methods:{
             ...mapActions(['checkLogin']),
              handleSubmit(name) {
-                console.log(this.formInline)
                 this.$refs[name].validate((valid) => {
-                    console.log(valid)
+                this.$emit("listenToChild",this.formInline.user)
+                    let that = this;
                     if (valid) {
-                        this.checkLogin(true);
-                        this.$Message.success('Success!');
+                        this.axios({
+                            method:'post',
+                            url:`http://192.168.2.165:8082/account/login`,
+                            data:{
+                                "name":this.formInline.user,
+                                "passWard":this.formInline.password,
+                                "status":this.status
+                            }
+                        }).then(response=>{
+                            console.log(response)
+                            if(response.data.success){     
+                                this.checkLogin(true);
+                                this.$Message.success('登录成功');
+                            }else if(response.data.result == 1){
+                                this.logForce =true
+                            }else{
+                                this.$Message.error('账号或者密码错误')
+                            }
+                        })
                     } else {
-                        this.$Message.error('Fail!');
+                        this.$Message.info('您还没有添加账号密码');
                     }
                 })
+            },
+            ok () {
+                this.status = 1
+                this.axios({
+                            method:'post',
+                            url:`http://192.168.2.165:8082/account/login`,
+                            data:{
+                                "name":this.formInline.user,
+                                "passWard":this.formInline.password,
+                                "status":this.status
+                            }
+                        }).then(response=>{
+                            console.log(response)
+                            if(response.data.success){     
+                                this.checkLogin(true);
+                                this.$Message.success('强制登录成功');
+                            }else{
+                                this.$Message.error('强制登录失败');
+                                this.logForce =false
+                            }
+                        })
+            },
+            cancel () {
+                this.$Message.info('Clicked cancel');
             }
         },
          computed: {

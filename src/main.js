@@ -11,11 +11,11 @@ import 'babel-polyfill';
 import Es6Promise from 'es6-promise';
 import 'url-search-params-polyfill'
 Es6Promise.polyfill()
-
 Vue.use(VueAxios, axios);
 Vue.use(VueRouter);
 Vue.use(iView);
-
+//允许请求的时候带上cookie
+axios.defaults.withCredentials = true;
 const router = new VueRouter({
    routes:routes,
    mode:'history'
