@@ -75,7 +75,7 @@ export default {
                             arrData[i].userSex = "女"
                         }
                     }
-                   this.list = response.data.result;
+                   this.list = arrData;
                    this.filter.total = response.data.total;
                    this.filter.limit = response.data.limit;
                 })
@@ -102,10 +102,10 @@ export default {
                         }
                     }).then((response) => {
                         console.log(response)
+                        this.$Message.success('新增成功!');
+                        this.modal=false;
                         this.getData();
-                        })
-                    this.$Message.success('新增成功!');
-                    this.modal=false;
+                    })
                 } else {
                     this.$Message.error('增加失败!');
                 }
@@ -146,6 +146,7 @@ export default {
         //新增用户
         adduser(name){
             this.modal= true;
+            this.formValidate.id = null
             this.$refs[name].resetFields();
         },
         //选择那一项
