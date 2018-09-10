@@ -89,7 +89,7 @@
                             <p>点击或拖拽文件上传</p>
                         </div>
                     </Upload>
-                    <div class="demo-upload-list" v-for="item in uploadList">
+                    <div class="demo-upload-list" v-for="item in uploadList" :key="item.id">
                             <img :src="item.url">
                             <div class="demo-upload-list-cover">
                                 <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>

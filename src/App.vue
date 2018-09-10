@@ -99,13 +99,13 @@
                         <Icon type="ios-navigate"></Icon>
                         <span>图片管理</span>
                     </router-link>
-                    <router-link to="/news" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                    <router-link to="/permission" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
                         <span>权限管理</span>
                     </router-link>
-                    <router-link to="/upload" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                    <router-link to="/role" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
-                        <span>图片管理</span>
+                        <span>角色管理</span>
                     </router-link>
                     <router-link to="/user" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
