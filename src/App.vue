@@ -111,6 +111,14 @@
                         <Icon type="ios-navigate"></Icon>
                         <span>用户管理</span>
                     </router-link>
+                    <router-link to="/log" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                        <Icon type="ios-navigate"></Icon>
+                        <span>日志管理</span>
+                    </router-link>
+                    <router-link to="/news" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                        <Icon type="ios-navigate"></Icon>
+                        <span>新闻管理</span>
+                    </router-link>
                 </Menu>
             </Sider>
             <Layout>

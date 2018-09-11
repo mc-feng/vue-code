@@ -114,6 +114,9 @@
             <Modal title="View Image" v-model="visible2">
                 <img :src="imageUrl" v-if="visible2" style="width: 100%">
             </Modal>
+            <Modal title="显示内容" v-model="content">
+                <div v-html="contentText"></div>
+            </Modal>
             <div slot="footer"></div>
         </Modal>
      </div>
@@ -126,6 +129,8 @@
             return {
                 visible:false,
                 visible2:false,
+                content:false,
+                contentText:"",
                 imageUrl:"",
                 modal2:false,
                 uploadUrl:"http://192.168.2.165:8082/photo/upload",
@@ -142,7 +147,21 @@
                     {
                         title: '内容',
                         key: 'text',
-                        type:"html"
+                        render:(h,params)=>{
+                            return h("div",[
+                                h("Button",{
+                                   props: {
+                                        type: 'text',
+                                        size: 'small'
+                                    },
+                                    on:{
+                                        click:() => {
+                                            this.showConten(params.row)
+                                        }
+                                    }
+                                },"点击显示内容")
+                            ])
+                        }
                     },
                     {
                         title: '图片',
@@ -288,6 +307,7 @@
                         console.log(response)
                         var arrData = response.data.result
                         for(var i = 0;i<arrData.length;i++){
+                            arrData[i].text=arrData[i].text.replace(/\<img/gi, '<img style="max-width:100%;height:auto" ')
                             if(arrData[i].top == 0){
                                 arrData[i].top = "否"
                             }else if(arrData[i].top == 1){
@@ -299,6 +319,7 @@
                     })
             },
             onsearch(){
+              this.filter.page = 1
               this.getData();
             },
             onpagechange(page){
@@ -518,6 +539,10 @@
                 console.log(url)
                 this.imageUrl = url
                 this.visible2 = true
+            },
+            showConten(row){
+                this.content = true
+                this.contentText =row.text
             }
         },
         mounted(){

@@ -9,7 +9,8 @@ import Image from "./components/image/index";
 import Kongbai from "./components/kongbai/index";
 import User from "./components/user/index";
 import Role from "./components/role/index";
-import Permission from "./components/permission/index"
+import Permission from "./components/permission/index";
+import Log from "./components/log/index"
 export const routes =[
     {path:'/',component:Home},
     {path:'/manage',component:Manage},
@@ -18,6 +19,7 @@ export const routes =[
     {path:'/user',component:User},
     {path:'/role',component:Role},
     {path:'/permission',component:Permission},
+    {path:'/log',component:Log},
     {path:'/classify',component:Classify},
     {path:'/news',component:News},
     {path:'/upload',component:Upload},

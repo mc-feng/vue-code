@@ -215,6 +215,7 @@
                     })
             },
             onsearch(){
+              this.filter.page = 1
               this.getData();
             },
             onpagechange(page){
