@@ -119,6 +119,14 @@
                         <Icon type="ios-navigate"></Icon>
                         <span>新闻管理</span>
                     </router-link>
+                    <router-link to="/mission" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                        <Icon type="ios-navigate"></Icon>
+                        <span>宣教管理</span>
+                    </router-link>
+                    <router-link to="/notice" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                        <Icon type="ios-navigate"></Icon>
+                        <span>公告管理</span>
+                    </router-link>
                 </Menu>
             </Sider>
             <Layout>
