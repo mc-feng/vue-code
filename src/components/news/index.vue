@@ -67,9 +67,10 @@
                     <Input v-model="formValidate.title" placeholder="Enter your title"></Input>
                 </FormItem>
                 <FormItem label="内容" prop="text">
-                       <quill-editor v-model="formValidate.text"
+                    <v-editor  v-model="formValidate.text" upload-url="http://192.168.2.165:8082/photo/upload" fileName="file"/>
+                       <!-- <quill-editor v-model="formValidate.text"
                                         ref="myQuillEditor">
-                        </quill-editor>
+                        </quill-editor> -->
                 </FormItem>
                 <FormItem label="焦点图">
                     <Upload
@@ -126,7 +127,7 @@
     import 'quill/dist/quill.core.css';
     import 'quill/dist/quill.snow.css';
     import 'quill/dist/quill.bubble.css';
-    import { quillEditor } from 'vue-quill-editor';
+    import vEditor  from '../kongbai/index';
     export default {
         data () {
             return {
@@ -294,22 +295,24 @@
             }
         },
         components: {
-            quillEditor
+            vEditor
         },
         methods:{
             getData(){
                 this.axios({
                         method:'post',
-                        url:`http://192.168.2.165:8082/photo/selectallnew`,
+                        url:`http://192.168.2.165:8082/photo/selectallphoto`,
                         data:{
                             id :this.filter.page,
                             status:this.filter.limit,
-                            title:this.filter.name
+                            title:this.filter.name,
+                            type: 1
                         }
                     }).then((response) => {
                         console.log(response)
                         var arrData = response.data.result
                         for(var i = 0;i<arrData.length;i++){
+                            arrData[i].text=arrData[i].text.replace(/\<img/gi, '<img style="max-width:100%;height:auto" ')
                             if(arrData[i].top == 0){
                                 arrData[i].top = "否"
                             }else if(arrData[i].top == 1){

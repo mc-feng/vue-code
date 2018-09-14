@@ -301,7 +301,8 @@
                         data:{
                             id :this.filter.page,
                             status:this.filter.limit,
-                            title:this.filter.name
+                            title:this.filter.name,
+                            type:0
                         }
                     }).then((response) => {
                         console.log(response)

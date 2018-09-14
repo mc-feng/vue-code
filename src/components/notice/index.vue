@@ -300,16 +300,18 @@
             getData(){
                 this.axios({
                         method:'post',
-                        url:`http://192.168.2.165:8082/photo/selectallnotice`,
+                        url:`http://192.168.2.165:8082/photo/selectallphoto`,
                         data:{
                             id :this.filter.page,
                             status:this.filter.limit,
-                            title:this.filter.name
+                            title:this.filter.name,
+                            type:3
                         }
                     }).then((response) => {
                         console.log(response)
                         var arrData = response.data.result
                         for(var i = 0;i<arrData.length;i++){
+                            arrData[i].text=arrData[i].text.replace(/\<img/gi, '<img style="max-width:100%;height:auto" ')
                             if(arrData[i].top == 0){
                                 arrData[i].top = "否"
                             }else if(arrData[i].top == 1){
