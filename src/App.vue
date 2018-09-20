@@ -95,10 +95,6 @@
                         <Icon type="ios-navigate"></Icon>
                         <span>预约管理</span>
                     </router-link>
-                    <router-link to="/image" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
-                        <Icon type="ios-navigate"></Icon>
-                        <span>图片管理</span>
-                    </router-link>
                     <router-link to="/permission" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                         <Icon type="ios-navigate"></Icon>
                         <span>权限管理</span>
@@ -115,18 +111,28 @@
                         <Icon type="ios-navigate"></Icon>
                         <span>日志管理</span>
                     </router-link>
-                    <router-link to="/news" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
-                        <Icon type="ios-navigate"></Icon>
-                        <span>新闻管理</span>
-                    </router-link>
-                    <router-link to="/mission" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
-                        <Icon type="ios-navigate"></Icon>
-                        <span>宣教管理</span>
-                    </router-link>
-                    <router-link to="/notice" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
-                        <Icon type="ios-navigate"></Icon>
-                        <span>公告管理</span>
-                    </router-link>
+                    <Submenu name="1">
+                        <template slot="title">
+                            <Icon type="ios-paper" />
+                            图片管理
+                        </template>
+                        <router-link to="/news" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                            <Icon type="ios-navigate"></Icon>
+                            <span>新闻管理</span>
+                        </router-link>
+                        <router-link to="/image" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                            <Icon type="ios-navigate"></Icon>
+                            <span>图片管理</span>
+                        </router-link>
+                        <router-link to="/mission" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                            <Icon type="ios-navigate"></Icon>
+                            <span>宣教管理</span>
+                        </router-link>
+                        <router-link to="/notice" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
+                            <Icon type="ios-navigate"></Icon>
+                            <span>公告管理</span>
+                        </router-link>
+                   </Submenu>
                 </Menu>
             </Sider>
             <Layout>
@@ -135,7 +141,7 @@
                         <BreadcrumbItem to="/">Home</BreadcrumbItem>
                     </Breadcrumb>
                     <Card>
-                        <div style="height: 700px">
+                        <div style="min-height: 700px;height:auto">
                             <router-view></router-view>
                         </div>
                     </Card>

@@ -9,7 +9,7 @@ import VueAxios from 'vue-axios';
 import {store} from './store/index';
 import 'babel-polyfill';
 import Es6Promise from 'es6-promise';
-import 'url-search-params-polyfill'
+import 'url-search-params-polyfill';
 Es6Promise.polyfill()
 Vue.use(VueAxios, axios);
 Vue.use(VueRouter);
@@ -20,7 +20,18 @@ const router = new VueRouter({
    routes:routes,
    mode:'history'
 });
-
+//判断登录是否过期
+axios.interceptors.response.use((response) => {
+  if (response.data === "") {
+        alert("登录状态已过期")
+        store.commit("changeLogin")
+        return response
+  } else {
+        return response
+  }
+}, (error) => {
+  return Promise.reject(error)
+})
 export const eventBus = new Vue();
 new Vue({
   el: '#app',

@@ -41,9 +41,19 @@
         cursor: pointer;
         margin: 0 2px;
     }
+    .demo-spin-container{
+    	display: inline-block;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        border: 1px solid #eee;
+    }
 </style>
 <template>
-     <div>
+     <div class="ddemo-spin-col" v-if="loading">
+            <Spin fix size="large"></Spin>
+     </div>
+     <div v-else>
         <Row>
              <Col span="8">
                 <Input v-model="filter.name">
@@ -127,6 +137,7 @@
     export default {
         data () {
             return {
+                loading:true,
                 visible:false,
                 visible2:false,
                 content:false,
@@ -317,6 +328,7 @@
                         }
                         this.list = arrData;
                         this.filter.total = response.data.total;
+                        this.loading = false;
                     })
             },
             onsearch(){
