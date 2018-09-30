@@ -136,6 +136,7 @@
                 })
             },
             show(res){
+                this.$refs["formValidate"].resetFields();
                 this.modal=true;
                 this.showAdd = true;
                 var newArr = [];
@@ -157,7 +158,8 @@
                     url:`http://192.168.2.165:8082/role/delete`,
                     data:{
                         userName:"a",
-                        id:res.id
+                        id:res.id,
+                        roleName:res.roleName
                     }
                 }).then((response) => {
                     console.log(response)

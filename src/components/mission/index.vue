@@ -41,12 +41,22 @@
         cursor: pointer;
         margin: 0 2px;
     }
+    .header-tips{
+        position: absolute;
+        top:-95px;
+        left: 0;
+        font-family: PingFangSC-Regular;
+        font-size: 14px;
+        color: #A3A3A3;
+        text-align: right;
+    }
 </style>
 <template>
      <div>
+        <div class="header-tips">宣教管理</div>
         <Row>
              <Col span="8">
-                <Input v-model="filter.name">
+                <Input v-model="filter.name" @keyup.enter.native="onsearch">
                     <Button slot="append" icon="ios-search" @click="onsearch"></Button>
                  </Input>
              </Col>
@@ -205,7 +215,7 @@
                         }
                     },
                     {
-                        title: '有效期',
+                        title: '上传日期',
                         key: 'updateTime'
                     },
                     {
@@ -478,6 +488,7 @@
             },
             //编辑
             show(row){
+                this.$refs["formValidate"].resetFields();
                 console.log(row)
                  if(row.top == "是"){
                     row.tops = "1";
@@ -502,7 +513,9 @@
                     data:{
                         "name":"a",
                         "id":row.id,
-                        "guid":row.photo
+                        "guid":row.photo,
+                        "userName":row.title,
+                        "userSex":2
                     }
                 }).then((res)=>{
                     console.log(res)
@@ -527,7 +540,9 @@
                         method:"post",
                         data:{
                           status: status ,
-                          id: row.id
+                          id: row.id,
+                          title:row.title,
+                          updateUserId:"a"
                         }
                     }).then((res)=>{
                         console.log(res)

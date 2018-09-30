@@ -7,8 +7,8 @@
      <div>
         <Row>
              <Col span="8">
-                <Input v-model="filter.name">
-                    <Button slot="append" icon="ios-search" @click="onsearch"></Button>
+                <Input v-model="filter.name" @keyup.enter.native="onsearch">
+                    <Button slot="append" icon="ios-search" @click="onsearch" ></Button>
                  </Input>
              </Col>
         </Row>
@@ -119,27 +119,6 @@
                     {
                         title: '提交时间',
                         key: 'createTime'
-                    },
-                    {
-                        title: '操作',
-                        key: 'action',
-                        width: 150,
-                        align: 'center',
-                        render: (h, params) => {
-                            return h('div', [
-                                h('Button', {
-                                    props: {
-                                        type: 'info',
-                                        size: 'small'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.remove(params.row)
-                                        }
-                                    }
-                                }, '查看')
-                            ]);
-                        }
                     }
                 ],
                 list: [],
@@ -205,6 +184,7 @@
                         method:'post',
                         url:`http://192.168.2.165:8082/account/getbooklist`,
                         data:{
+                            name:this.filter.name,
                             id:this.filter.page,
                             userSex:this.filter.limit
                         }

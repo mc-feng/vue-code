@@ -15,6 +15,8 @@ export default {
     methods: {
         //修改
         show (res) {
+            this.modal=true;
+            this.handleReset ("formValidate")
             var gender = "1"
             if(res.userSex == "男"){
                 gender = "0"
@@ -36,7 +38,6 @@ export default {
                 id:res.id
             }
             this.formValidate=JSON.parse(JSON.stringify(subObject));
-            this.modal=true;
             // this.$Modal.info({
             //     title: 'User Info',
             //     content: `Name：${res.name}<br>Age：${res.age}<br>City：${res.city}<br>`
@@ -69,6 +70,7 @@ export default {
                     console.log(response)
                     var arrData = response.data.result
                     for(var i = 0;i<arrData.length;i++){
+                        arrData[i].userBoth = arrData[i].userBoth.split("T")[0]//处理时间
                         if(arrData[i].userSex == 0){
                             arrData[i].userSex = "男"
                         }else if(arrData[i].userSex == 1){
@@ -84,6 +86,7 @@ export default {
          handleSubmit (name) {
           if(this.formValidate.id == null){
             this.$refs[name].validate((valid) => {
+                console.log(valid)
                 if (valid) {
                     console.log(this.formValidate)
                     // console.log(md5(this.formValidate.password).toString())
@@ -111,7 +114,9 @@ export default {
                 }
             })
           }else{
-              this.axios({
+            this.$refs[name].validate((valid) => {
+                if(valid){
+                    this.axios({
                         method:'post',
                         url:`http://192.168.2.165:8082/account/modify`,
                         data:{
@@ -121,7 +126,8 @@ export default {
                             roleGrade:this.formValidate.role,
                             userPhone:this.formValidate.phone,
                             userSex:this.formValidate.gender,
-                            userBoth:this.formValidate.date
+                            userBoth:this.formValidate.date,
+                            guid:"a"
                         }
                     }).then((response) => {
                         console.log(response)
@@ -130,6 +136,13 @@ export default {
                         this.formValidate.id = null
                         this.getData();
                     })
+                }else{
+                    this.$Notice.warning({
+                        title: '验证错误',
+                        desc: `请您检验您的表单信息`
+                    })
+                }
+            })
           }
         },
         handleReset (name) {
@@ -149,28 +162,41 @@ export default {
             this.formValidate.id = null
             this.$refs[name].resetFields();
         },
+        //选择日期
+        chooseData(res){
+            this.formValidate.date = res
+        },
         //选择那一项
         selectionChange(selection){
             this.selection = selection
         },
-        //多项删除
-        deletemore(){
-            var ids='';
-            for(let i=0;i<this.selection.length;i++){
-              this.arr.push(this.selection[i]._id ) 
-            };
-             ids = this.arr.toString();
-             console.log(ids);
-             this.axios({
-                        method:'post',
-                        url:`http://localhost:3000/${this.module}/data/removes`,
-                        data:{
-                            ids:ids
-                        }
-                    }).then((response) => {
-                        this.getData();
-                        })
-        },
+        selectPower(){
+            this.axios({
+               method:'post',
+               url:`http://192.168.2.165:8082/role/getname`
+           }).then((response) => {
+               console.log(response)
+               this.resArr = response.data.result
+           })
+       },
+        // //多项删除
+        // deletemore(){
+        //     var ids='';
+        //     for(let i=0;i<this.selection.length;i++){
+        //       this.arr.push(this.selection[i]._id ) 
+        //     };
+        //      ids = this.arr.toString();
+        //      console.log(ids);
+        //      this.axios({
+        //                 method:'post',
+        //                 url:`http://localhost:3000/${this.module}/data/removes`,
+        //                 data:{
+        //                     ids:ids
+        //                 }
+        //             }).then((response) => {
+        //                 this.getData();
+        //                 })
+        // },
         //搜索
         onsearch(){
             this.getData();
@@ -179,5 +205,6 @@ export default {
     mounted(){
         //首次加载显示
         this.getData();
+        this.selectPower()
     }
 }

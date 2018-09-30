@@ -138,7 +138,7 @@
                                         </Input>
                                     </FormItem>
                                     <FormItem prop="password" class="bg-right-table1">
-                                        <Input type="password" v-model="formInline.password" placeholder="Password">
+                                        <Input type="password" v-model="formInline.password" placeholder="Password" @keyup.enter.native="handleSubmit('formInline')">
                                             <Icon type="ios-locked-outline" slot="prepend"></Icon>
                                         </Input>
                                     </FormItem>

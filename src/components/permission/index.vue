@@ -91,12 +91,12 @@
                     explains:''
                 },
                 ruleValidate: {
-                    header: [
+                    powerName: [
                         { required: true, message: '标题不能为空', trigger: 'blur' }
                     ],
                     explains: [
                         { required: true, message: '请输入描述内容', trigger: 'blur' },
-                        { type: 'string', min: 20, message: '至少要有20字', trigger: 'blur' }
+                        { type: 'string', min: 20, message: '至少要有20字', trigger: 'blur'}
                     ]
                 }
             }
@@ -113,21 +113,31 @@
                 })
             },
             show(res){
+                this.$refs["formValidate"].resetFields();
                 this.modal=true;
                 this.showAdd = true;
                 this.formValidate=JSON.parse(JSON.stringify(res))
             },
             remove(res){
+                console.log(res)
                 this.axios({
                     method:'post',
                     url:`http://192.168.2.165:8082/power/delete`,
                     data:{
                         name:"a",
-                        id:res.id
+                        id:res.id,
+                        roleName:res.powerName
                     }
                 }).then((response) => {
                     console.log(response)
-                    this.getData();
+                    if(response.data.success){
+                     this.getData();
+                    }else{
+                        this.$Notice.warning({
+                                        title: '无法删除',
+                                        desc: response.data.message
+                       })
+                    }
                 })
             },
             handleSubmit(name){

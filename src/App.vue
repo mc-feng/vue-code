@@ -73,6 +73,37 @@
         float: right;
         cursor: pointer;
     }
+    .edit{
+        width: 100%;
+        background: #FFFFFF;
+        height: 60px;
+        border-bottom: 1px solid #D8D8D8
+    }
+    .edit-left{
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        vertical-align: middle;
+        width: 200px;
+        height: 60px;
+        /* position: relative; */
+        border-right:  1px solid #D8D8D8;
+    }
+    .edit-image{
+        margin-left: 38px;
+    }
+    .edit-font{
+        /* position: absolute; */
+        /* left: 80px;
+        top: 18px; */
+        margin-left: 11px;
+        font-family: PingFangSC-Regular;
+        font-size: 16px;
+        color: #232323;
+    }
+    .ivu-layout.ivu-layout-has-sider>.ivu-layout{
+        overflow-x: visible
+    }
 </style>
 <template>
     <div v-if='!login'  class="main">
@@ -82,7 +113,14 @@
       <Header class="header">
                 <div class="header-logo"> <img src="./assets/logos.png" alt="this is logo"></div>
                 <div class="header-font clear"><i>上海市公共卫生管理中心后台管理系统</i><b @click="quit">退出</b></div>
-     </Header>
+      </Header>
+      <div class="edit">
+          <div class="edit-left">
+              <Icon type="ios-contact" class="edit-image" size= 35 />
+              <div class="edit-font">{{user}}</div>
+          </div>
+          <div></div>
+      </div>
       <div class="layout">
         <Layout :style="{minHeight: '100vh'}">
             <Sider collapsible :collapsed-width="78" v-model="isCollapsed" class="sider" hide-trigger>
@@ -114,11 +152,11 @@
                     <Submenu name="1">
                         <template slot="title">
                             <Icon type="ios-paper" />
-                            图片管理
+                            图文管理
                         </template>
                         <router-link to="/news" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                             <Icon type="ios-navigate"></Icon>
-                            <span>新闻管理</span>
+                            <span>资讯管理</span>
                         </router-link>
                         <router-link to="/image" tag='li'  class="ivu-menu-item" active-class="ivu-menu-item ivu-menu-item-active ivu-menu-item-selected">
                             <Icon type="ios-navigate"></Icon>

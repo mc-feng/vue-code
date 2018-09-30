@@ -7,7 +7,7 @@
      <div>
         <Row>
              <Col span="8">
-                <Input v-model="filter.name">
+                <Input v-model="filter.name" @keyup.enter.native="onsearch">
                     <Button slot="append" icon="ios-search" @click="onsearch"></Button>
                  </Input>
              </Col>

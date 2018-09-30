@@ -12,7 +12,7 @@
               </ButtonGroup>
             </Col>
              <Col span="12">
-                <Input v-model="filter.name">
+                <Input v-model="filter.name" @keyup.enter.native="onsearch">
                     <Button slot="append" icon="ios-search" @click="onsearch"></Button>
                  </Input>
              </Col>
@@ -23,10 +23,10 @@
             title="添加管理员">
             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
                 <FormItem label="账号" prop="account">
-                    <Input v-model="formValidate.account" placeholder="请输入账号"></Input>
+                    <Input v-model="formValidate.account" placeholder="请输入账号" :disabled="formValidate.id!=null"></Input>
                 </FormItem>
                 <FormItem label="密码" prop="passwd">
-                    <Input type="password" v-model="formValidate.passwd" placeholder="请输入密码"></Input>
+                    <Input type="password" v-model="formValidate.passwd" placeholder="请输入密码(密码要在6到12位之间)"></Input>
                 </FormItem>
                 <FormItem label="确认密码" prop="passwdCheck">
                     <Input type="password" v-model="formValidate.passwdCheck" placeholder="请再次输入密码"></Input>
@@ -41,7 +41,7 @@
                     <Row>
                         <Col span="11">
                             <FormItem prop="date">
-                                <DatePicker type="date" placeholder="请选择出生年月日" v-model="formValidate.date"></DatePicker>
+                                <DatePicker type="date" placeholder="请选择出生年月日" v-model="formValidate.date" @on-change="chooseData"></DatePicker>
                             </FormItem>
                         </Col>
                     </Row>
@@ -54,8 +54,9 @@
                 </FormItem>
                 <FormItem label="角色" prop="role">
                     <Select v-model="formValidate.role" placeholder="选择你的角色">
-                        <Option value="2">员工</Option>
-                        <Option value="1">管理员</Option>
+                        <Option v-for="item in resArr" :key="item.id" :value="item.id.toString()">{{item.roleName}}</Option>
+                        <!-- <Option value="2">员工</Option>
+                        <Option value="1">管理员</Option> -->
                     </Select>
                 </FormItem>
                 <FormItem>
@@ -77,6 +78,8 @@
             const validatePass = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('密码不能为空'));
+                } else if(!/^\d{6,12}$/.test(value)){
+                   callback(new Error('密码应在6-12位'));
                 } else {
                     if (this.formValidate.passwdCheck !== '') {
                         // 对第二个密码框单独验证
@@ -180,6 +183,7 @@
                 list: [],
                 selection:[],
                 arr:[],
+                resArr:[],
                 formValidate: {
                     passwd: '',
                     passwdCheck: '',
@@ -201,13 +205,10 @@
                         { required: true, validator:validatePhone, trigger: 'blur'},
                     ],
                     role: [
-                        { required: true, message: '请选择你的角色', trigger: 'change' }
+                        { required: true, message: '请选择你的角色', trigger: 'blur' }
                     ],
                     gender: [
                         { required: true, message: '请选择性别', trigger: 'change' }
-                    ],
-                    date: [
-                        { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
                     ],
                     passwd: [
                         { required: true,validator: validatePass, trigger: 'blur' }

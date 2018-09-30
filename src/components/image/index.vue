@@ -48,15 +48,25 @@
         position: relative;
         border: 1px solid #eee;
     }
+    .header-tips{
+        position: absolute;
+        top:-95px;
+        left: 0;
+        font-family: PingFangSC-Regular;
+        font-size: 14px;
+        color: #A3A3A3;
+        text-align: right;
+    }
 </style>
 <template>
      <div class="ddemo-spin-col" v-if="loading">
             <Spin fix size="large"></Spin>
      </div>
      <div v-else>
+        <div class="header-tips">图片管理</div>
         <Row>
              <Col span="8">
-                <Input v-model="filter.name">
+                <Input v-model="filter.name" @keyup.enter.native="onsearch">
                     <Button slot="append" icon="ios-search" @click="onsearch"></Button>
                  </Input>
              </Col>
@@ -77,9 +87,10 @@
                     <Input v-model="formValidate.title" placeholder="Enter your title"></Input>
                 </FormItem>
                 <FormItem label="内容" prop="text">
-                       <quill-editor v-model="formValidate.text"
+                       <v-editor  v-model="formValidate.text" upload-url="http://192.168.2.165:8082/photo/upload" fileName="file"/>
+                       <!-- <quill-editor v-model="formValidate.text"
                                         ref="myQuillEditor">
-                        </quill-editor>
+                        </quill-editor> -->
                 </FormItem>
                 <FormItem label="焦点图">
                     <Upload
@@ -133,7 +144,8 @@
 </template>
 <script>
     import md5 from 'crypto-js/md5';
-    import { quillEditor } from 'vue-quill-editor';
+    import vEditor  from '../kongbai/index';
+    // import { quillEditor } from 'vue-quill-editor';
     export default {
         data () {
             return {
@@ -212,7 +224,7 @@
                         }
                     },
                     {
-                        title: '有效期',
+                        title: '上传日期',
                         key: 'updateTime'
                     },
                     {
@@ -302,7 +314,7 @@
             }
         },
         components: {
-            quillEditor
+            vEditor
         },
         methods:{
             getData(){
@@ -486,6 +498,7 @@
             },
             //编辑
             show(row){
+                this.$refs["formValidate"].resetFields();
                 console.log(row)
                  if(row.top == "是"){
                     row.tops = "1";
@@ -510,7 +523,9 @@
                     data:{
                         "name":"a",
                         "id":row.id,
-                        "guid":row.photo
+                        "guid":row.photo,
+                        "userName":row.title,
+                        "userSex":0
                     }
                 }).then((res)=>{
                     console.log(res)
@@ -535,7 +550,9 @@
                         method:"post",
                         data:{
                           status: status ,
-                          id: row.id
+                          id: row.id,
+                          title:row.title,
+                          updateUserId:"a"
                         }
                     }).then((res)=>{
                         console.log(res)
