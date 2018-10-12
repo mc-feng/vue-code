@@ -15,7 +15,7 @@
         <Table border :columns="columns" :data="list" ref="selection" class="bookContent"></Table>
         <Modal
             v-model="modal"
-            title="添加角色">
+            title="添加角色" :mask-closable="closable">
             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
                 <FormItem label="名称" prop="header">
                     <Input v-model="formValidate.header" placeholder="请输权限名称"></Input>
@@ -42,6 +42,7 @@
     export default {
         data () {
             return {
+                closable:false,//关闭遮罩层
                 modal:false,
                 resArr:[],
                 showAdd:false,
@@ -129,7 +130,9 @@
                  this.axios({
                     method:'post',
                     url:`http://192.168.2.165:8082/power/select`,
-                    data:{}
+                    data:{
+                        id:1
+                    }
                 }).then((response) => {
                     console.log(response)
                     this.resArr = response.data.result
@@ -157,7 +160,7 @@
                     method:'post',
                     url:`http://192.168.2.165:8082/role/delete`,
                     data:{
-                        userName:"a",
+                        userName:this.$store.state.name,
                         id:res.id,
                         roleName:res.roleName
                     }
@@ -176,7 +179,7 @@
                                 url:`http://192.168.2.165:8082/role/add`,
                                 data:{
                                     roleName:this.formValidate.header,
-                                    createUser:"a",
+                                    createUser:this.$store.state.name,
                                     powerGrade:this.formValidate.permission.join(","),
                                     explains:this.formValidate.explains
                                 }
@@ -191,10 +194,11 @@
                                 url:`http://192.168.2.165:8082/role/update`,
                                 data:{
                                     roleName:this.formValidate.header,
-                                    createUser:"a",
+                                    createUser:this.$store.state.name,
                                     powerGrade:this.formValidate.permission.join(","),
                                     explains:this.formValidate.explains,
-                                    id:this.formValidate.id
+                                    id:this.formValidate.id,
+                                    updateUser:this.$store.state.name
                                 }
                             }).then((response) => {
                                 console.log(response)

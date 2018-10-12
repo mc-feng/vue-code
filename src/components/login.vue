@@ -170,7 +170,7 @@
                 },
                 ruleInline: {
                     user: [
-                        { required: true, message: '请输入姓名', trigger: 'blur' }
+                        { required: true, message: '请输入账号', trigger: 'blur' }
                     ],
                     password: [
                         { required: true, message: '请输入密码', trigger: 'blur' },
@@ -196,8 +196,9 @@
                                 "status":this.status
                             }
                         }).then(response=>{
-                            console.log(response)
-                            if(response.data.success){     
+                            console.log(this.formInline.user)
+                            if(response.data.success){
+                                this.$store.commit('saveName',this.formInline.user)     
                                 this.checkLogin(true);
                                 this.$Message.success('登录成功');
                             }else if(response.data.result == 1){
@@ -222,9 +223,10 @@
                                 "status":this.status
                             }
                         }).then(response=>{
-                            console.log(response)
+                            console.log(this.formInline.user)
                             if(response.data.success){     
                                 this.checkLogin(true);
+                                this.$store.commit('saveName',this.formInline.user) 
                                 this.$Message.success('强制登录成功');
                             }else{
                                 this.$Message.error('强制登录失败');

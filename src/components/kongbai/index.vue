@@ -95,7 +95,7 @@
           .then(res => {
             if (res.data) {
               console.log(res.data);
-              this.editor.insertEmbed(this.editor.getSelection().index, 'image'," http://192.168.2.165:8082/"+res.data.result)
+              this.editor.insertEmbed(this.editor.getSelection().index, 'image',"http://192.168.2.165:8082/"+res.data.result)
             }
             console.log(this.content)
           })

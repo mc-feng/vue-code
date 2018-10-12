@@ -6,11 +6,15 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state:{
-        login:false
+        login:false,
+        name:""
     },
     getters:{
         login:state=>{
             return state.login;
+        },
+        name:state=>{
+            return state.name;
         }
     },
     mutations:{
@@ -19,6 +23,9 @@ export const store = new Vuex.Store({
         },
         changeLogin:(state)=>{
             state.login= false
+        },
+        saveName:(state,payload)=>{
+            state.name = payload;
         }
     },
     actions:{

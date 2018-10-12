@@ -61,7 +61,7 @@
         <!-- 绑定数据 -->
         <Modal
             v-model="modal2"
-            title="添加图片">
+            title="添加图片" :mask-closable="closable">
             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="50">
                 <FormItem label="名称" prop="title">
                     <Input v-model="formValidate.title" placeholder="Enter your title"></Input>
@@ -123,7 +123,6 @@
      </div>
 </template>
 <script>
-    import md5 from 'crypto-js/md5';
     import 'quill/dist/quill.core.css';
     import 'quill/dist/quill.snow.css';
     import 'quill/dist/quill.bubble.css';
@@ -131,6 +130,7 @@
     export default {
         data () {
             return {
+                closable:false,//关闭遮罩层
                 visible:false,
                 visible2:false,
                 content:false,
@@ -359,7 +359,7 @@
                                         data:{
                                             "text":this.formValidate.text,
                                             "title":this.formValidate.title,
-                                            "createUserId":"a",
+                                            "createUserId":this.$store.state.name,
                                             "type":1,
                                             "top":Number(this.formValidate.tops),
                                             "photo":this.lunBoImage
@@ -394,7 +394,8 @@
                             "text":this.formValidate.text,
                             "title":this.formValidate.title,
                             "photo":this.lunBoImage,
-                            "updateUserId":"a",
+                            "type":1,
+                            "updateUserId":this.$store.state.name,
                             "top":Number(this.formValidate.tops),
                             "id":this.formValidate.id
                         }
@@ -501,7 +502,7 @@
                     url:"http://192.168.2.165:8082/photo/delete",
                     method:"post",
                     data:{
-                        "name":"a",
+                        "name":this.$store.state.name,
                         "id":row.id,
                         "guid":row.photo,
                         "userName":row.title,
@@ -531,8 +532,9 @@
                         data:{
                           status: status ,
                           id: row.id,
+                          type:1,
                           title:row.title,
-                          updateUserId:"a"
+                          updateUserId:this.$store.state.name
                         }
                     }).then((res)=>{
                         console.log(res)

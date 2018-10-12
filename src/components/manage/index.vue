@@ -20,7 +20,7 @@
         <Table border :columns="columns" :data="list" ref="selection" @on-selection-change='selectionChange'></Table>
         <Modal
             v-model="modal"
-            title="添加管理员">
+            title="添加管理员" :mask-closable="closable">
             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
                 <FormItem label="账号" prop="account">
                     <Input v-model="formValidate.account" placeholder="请输入账号" :disabled="formValidate.id!=null"></Input>
@@ -107,6 +107,7 @@
                 }
             }
             return {
+                closable:false,//关闭遮罩层
                 columns: [
                     {
                         title: '姓名',

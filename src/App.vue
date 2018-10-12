@@ -202,15 +202,14 @@
         methods:{
             ...mapActions(['checkLogin','changeLogin']),
             showChild(data){
-                this.user = data
             },
             quit(data){
-                console.log(this.user)
+                console.log(this.$store.state.name)
                  this.axios({
                     method:'post',
                     url:`http://192.168.2.165:8082/account/logout`,
                     data:{
-                        "name":this.user
+                        "name":this.$store.state.name
                     }
                 }).then(response=>{
                     console.log(response)  
@@ -229,7 +228,10 @@
         },
         components:{
            appLogin:Login
-        }
+        },
+        updated(){
+            this.user = this.$store.state.name
+         }
     }
 </script>
 

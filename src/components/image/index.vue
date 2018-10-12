@@ -81,7 +81,7 @@
         <!-- 绑定数据 -->
         <Modal
             v-model="modal2"
-            title="添加图片">
+            title="添加图片" :mask-closable="closable">
             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="50">
                 <FormItem label="名称" prop="title">
                     <Input v-model="formValidate.title" placeholder="Enter your title"></Input>
@@ -143,12 +143,12 @@
      </div>
 </template>
 <script>
-    import md5 from 'crypto-js/md5';
     import vEditor  from '../kongbai/index';
     // import { quillEditor } from 'vue-quill-editor';
     export default {
         data () {
             return {
+                closable:false,//关闭遮罩层
                 loading:true,
                 visible:false,
                 visible2:false,
@@ -364,10 +364,11 @@
             //新增提交按钮
             handleSubmit(name){
                 if(this.formValidate.bianji == null){
-                    console.log(this.formValidate.bianji)
                     this.$refs[name].validate((valid)=>{
                         if(valid){
+                            console.log(this.lunBoImage)
                             if(this.lunBoImage ==""){
+                                console.log(this.lunBoImage)
                                 this.$Notice.warning({
                                         title: '图片没有上传',
                                         desc: `请上传您想选择的图片`
@@ -379,7 +380,7 @@
                                         data:{
                                             "text":this.formValidate.text,
                                             "title":this.formValidate.title,
-                                            "createUserId":"a",
+                                            "createUserId":this.$store.state.name,
                                             "type":0,
                                             "top":Number(this.formValidate.tops),
                                             "photo":this.lunBoImage
@@ -413,8 +414,9 @@
                         data:{
                             "text":this.formValidate.text,
                             "title":this.formValidate.title,
+                            "type":0,
                             "photo":this.lunBoImage,
-                            "updateUserId":"a",
+                            "updateUserId":this.$store.state.name,
                             "top":Number(this.formValidate.tops),
                             "id":this.formValidate.id
                         }
@@ -448,7 +450,6 @@
                 })
                 return false
                 }
-                console.log(file)
                 // 创建一个 FileReader 对象
                 let reader = new FileReader()
                 // readAsDataURL 方法用于读取指定 Blob 或 File 的内容
@@ -465,7 +466,7 @@
             },
             //上传成功返回参数
             handleOnSuccess(res){
-              console.log(res)
+            //   var res = JSON.parse(util.formatString(util.Decrypt(res)))
               if(res.success){
                  this.lunBoImage = res.result
               }else{
@@ -521,7 +522,7 @@
                     url:"http://192.168.2.165:8082/photo/delete",
                     method:"post",
                     data:{
-                        "name":"a",
+                        "name":this.$store.state.name,
                         "id":row.id,
                         "guid":row.photo,
                         "userName":row.title,
@@ -549,10 +550,11 @@
                         url:"http://192.168.2.165:8082/photo/changestatus",
                         method:"post",
                         data:{
-                          status: status ,
+                          status: status,
+                          type:0,
                           id: row.id,
                           title:row.title,
-                          updateUserId:"a"
+                          updateUserId:this.$store.state.name
                         }
                     }).then((res)=>{
                         console.log(res)

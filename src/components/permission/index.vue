@@ -15,7 +15,7 @@
         <Table border :columns="columns" :data="list" ref="selection" class="bookContent"></Table>
         <Modal
             v-model="modal"
-            title="添加角色">
+            title="添加角色" :mask-closable="closable">
             <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
                 <FormItem label="名称" prop="powerName">
                     <Input v-model="formValidate.powerName" placeholder="请输权限名称"></Input>
@@ -37,6 +37,7 @@
     export default {
         data () {
             return {
+                closable:false,//关闭遮罩层
                 modal:false,
                 showAdd:false,
                 columns: [
@@ -124,7 +125,7 @@
                     method:'post',
                     url:`http://192.168.2.165:8082/power/delete`,
                     data:{
-                        name:"a",
+                        name:this.$store.state.name,
                         id:res.id,
                         roleName:res.powerName
                     }
@@ -150,7 +151,7 @@
                                 url:`http://192.168.2.165:8082/power/add`,
                                 data:{
                                     powerName:this.formValidate.powerName,
-                                    createUser:"a",
+                                    createUser:this.$store.state.name,
                                     explains:this.formValidate.explains
                                 }
                             }).then((response) => {
@@ -164,7 +165,7 @@
                                 url:`http://192.168.2.165:8082/power/update`,
                                 data:{
                                     powerName:this.formValidate.powerName,
-                                    updateUser:"a",
+                                    updateUser:this.$store.state.name,
                                     explains:this.formValidate.explains,
                                     id:this.formValidate.id
                                 }

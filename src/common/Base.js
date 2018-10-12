@@ -50,7 +50,7 @@ export default {
                 method:'post',
                 url:`http://192.168.2.165:8082/account/delete`,
                 data:{
-                    name:"a",
+                    name:this.$store.state.name,
                     userName:row.name
                 }
             }).then(response=>{
@@ -101,7 +101,8 @@ export default {
                             roleGrade:this.formValidate.role,
                             userPhone:this.formValidate.phone,
                             userSex:this.formValidate.gender,
-                            userBoth:this.formValidate.date
+                            userBoth:this.formValidate.date,
+                            roleName:this.$store.state.name
                         }
                     }).then((response) => {
                         console.log(response)
@@ -127,7 +128,7 @@ export default {
                             userPhone:this.formValidate.phone,
                             userSex:this.formValidate.gender,
                             userBoth:this.formValidate.date,
-                            guid:"a"
+                            guid:this.$store.state.name
                         }
                     }).then((response) => {
                         console.log(response)
